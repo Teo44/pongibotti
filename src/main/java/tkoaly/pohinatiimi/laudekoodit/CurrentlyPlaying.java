@@ -8,21 +8,27 @@ import java.util.ArrayList;
  */
 public class CurrentlyPlaying {
     
-    ArrayList<Team> playing = new ArrayList<>();
+    Team[] playing = new Team[2];
     
     public int getLength()  {
-        return playing.size();
+        int pelaajat = 0;
+        if (playing[0] != null) {
+            pelaajat++;
+        } if (playing[1] != null) {
+            pelaajat++;
+        }
+        return pelaajat;
     }
     
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < playing.size(); i++) {
+        for (int i = 0; i < 2; i++) {
             sb.append("Table ");
             sb.append(String.valueOf(i+1));
             sb.append(": ");
-            sb.append(playing.get(i));
-            if (i != playing.size()-1) {
+            sb.append(playing[i]);
+            if (i != 1) {
                 sb.append("\n");
             }
         }
@@ -35,18 +41,24 @@ public class CurrentlyPlaying {
     }
     
     public boolean add(String team, Long id)    {
-        if (playing.size() > 1) {
+        if (getLength() > 1) {
             return false;
         }
-        playing.add(new Team(team, id));
-        return true;
+        if (playing[0] == null) {
+            playing[0] = (new Team(team, id));
+            return true;
+        } else if (playing[1] == null) {
+            playing[1] = (new Team(team, id));
+            return true;
+        }
+        return false;
     }
     
     public int finishedPlaying(String team, Long ChatId) {
         for (int i = 0; i < 2; i++) {
-            if (playing.get(i).getName().equals(team))    {
-                if (playing.get(i).getChatId().equals(ChatId))  {
-                    playing.remove(i);
+            if (playing[i].getName().equals(team))    {
+                if (playing[i].getChatId().equals(ChatId))  {
+                    playing[i] = null;
                     return 0;
                 }
                 return 1;
