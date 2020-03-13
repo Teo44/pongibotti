@@ -23,8 +23,13 @@ public class Registrations {
         if (!isValidName(name)) {
             return false;
         }
+        Team team = new Team(name);
         
-        return registrations.add(new Team(name));
+        if (registrations.contains(team)) {
+            return false;
+        }
+        
+        return registrations.add(team);
     }
     
     public boolean deleteTeam(String name) {
