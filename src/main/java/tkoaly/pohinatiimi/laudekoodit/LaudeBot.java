@@ -9,6 +9,11 @@ import io.github.cdimascio.dotenv.Dotenv;
 public class LaudeBot extends TelegramLongPollingBot {
 
     private Dotenv dotenv = Dotenv.load();
+    private PongiQueue pongiqueue;
+    
+    public LaudeBot()   {
+        pongiqueue = new PongiQueue();
+    }
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -23,8 +28,10 @@ public class LaudeBot extends TelegramLongPollingBot {
         // Choose text for answer
         if (text.equals("Hello")) {
             answer.setText("World!");
-        } else {
-            answer.setText("Happy hacking!");
+        } else if (text.startsWith("/play")) {
+            pongiqueue.add(text.replace("/play ", ""));
+        } else if (text.startsWith("/unplay")) {
+            
         }
         
         // Send message
