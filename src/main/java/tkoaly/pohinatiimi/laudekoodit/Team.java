@@ -14,9 +14,11 @@ import java.util.Objects;
 public class Team {
     
     private String name;
+    private Long chatId;
 
-    public Team(String name) {
+    public Team(String name, Long chatId) {
         this.name = name;
+        this.chatId = chatId;
     }
 
     public String getName() {
@@ -25,6 +27,10 @@ public class Team {
     
     public void setName(String name) {
         this.name = name;
+    }
+    
+    public Long getChatId() {
+        return this.getChatId();
     }
     
     @Override
