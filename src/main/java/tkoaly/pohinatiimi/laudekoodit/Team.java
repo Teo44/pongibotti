@@ -5,6 +5,8 @@
  */
 package tkoaly.pohinatiimi.laudekoodit;
 
+import java.util.Objects;
+
 /**
  *
  * @author danielko
@@ -17,6 +19,31 @@ public class Team {
         this.name = name;
     }
 
+    public String getName() {
+        return this.name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) return false;
+        if (o == this) return true;
+        if (!(o instanceof Team)) return false;
+        Team other = (Team) o;
+        return this.name.equals(other.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 53 * hash + Objects.hashCode(this.name);
+        return hash;
+    }
+
+    
     @Override
     public String toString() {
         return this.name;
