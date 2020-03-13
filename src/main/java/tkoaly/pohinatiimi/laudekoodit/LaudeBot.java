@@ -35,12 +35,24 @@ public class LaudeBot extends TelegramLongPollingBot {
                 answer.setText("Team already exists");
             }
         } else if (text.startsWith("/unplay ")) {
-            if (pongiqueue.deleteTeam(text.replace("/unplay ", ""), chatId))    {
+            int remStatus = pongiqueue.deleteTeam(text.replace("/unplay ", ""), chatId);
+            if ( remStatus == 0) {
                 answer.setText("Team removed");
-            } else  {
-                answer.setText("Team doesn't exists");
+            } else if (remStatus == -1) {
+                answer.setText("Bad teamname (empty)");
+            } else if (remStatus == -2) {
+                answer.setText("Team does not exist");
+            } else if (remStatus == -3) {
+                answer.setText("You can't remove others team!");
+            } else {
+                answer.setText("VIIIIIIIIIIIIIIIIIIIIIIIIRHE");
             }
-        }
+        } else if (text.equals("/list")) {
+            System.out.println("IN METHOD");
+            answer.setText(pongiqueue.toString());
+        } else {
+            answer.setText("Unknonwn command, have more drinks!");
+        } 
         
         // Send message
         try {

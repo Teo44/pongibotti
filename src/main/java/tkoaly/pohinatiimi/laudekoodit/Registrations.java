@@ -31,23 +31,44 @@ public class Registrations {
         
         return registrations.add(team);
     }
-    
-    public boolean deleteTeam(String name, Long chatId) {
+    /**
+     * Returns 0 if deletion succeeded. Returns -1 if got badly formatted
+     * (empty) team name. return -2 if team doesnt exists. return -3 if trying to delete with the wrong chatId
+     * (from the wrong chat!)
+     * @param name
+     * @param chatId
+     * @return 
+     */
+    public int deleteTeam(String name, Long chatId) {
         if (!isValidName(name)) {
-            return false;
+            return -1;
+            //returnVal = -1;
         }
+        
         Team registeredTeam = null;
+        
         for (Team registered : registrations) {
             if (registered.getName().equals(name)) {
                 registeredTeam = registered;
             }
         }
         
-        if (registeredTeam != null && registeredTeam.getChatId() == chatId) {
-            return registrations.remove(registeredTeam);
+        
+        if (registeredTeam == null) {
+            return -2;
+            //returnVal = -2;
+            //return registrations.remove(registeredTeam);
         }
         
-        return false;
+        if (!registeredTeam.getChatId().equals(chatId)) {
+            return -3;
+        }
+        
+        if (registrations.remove(registeredTeam)) {
+            return 0;
+        }
+        
+        return -4;
     }
     
     //public boolean confirmTeamPlays(String name) {
@@ -61,13 +82,17 @@ public class Registrations {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (Team t : registrations) {
-            sb.append(t).append("\n");
+        for (int i = 1; i <= registrations.size(); i++) {
+            sb.append(String.valueOf(i)).append(": ");
+            sb.append(registrations.get(i)).append("\n");
         }
+        
         if (sb.length() == 0) {
             sb.append("No registrations").append("\n");
         }
-        
+        System.out.println("DEBUG");
+        System.out.println(sb);
+        System.out.println("**********");
         return sb.substring(0, sb.length()); //remove trailing newline
     }
 }
