@@ -28,10 +28,18 @@ public class LaudeBot extends TelegramLongPollingBot {
         // Choose text for answer
         if (text.equals("Hello")) {
             answer.setText("World!");
-        } else if (text.startsWith("/play")) {
-            pongiqueue.add(text.replace("/play ", ""));
-        } else if (text.startsWith("/unplay")) {
-            
+        } else if (text.startsWith("/play ")) {
+            if (pongiqueue.add(text.replace("/play ", ""))) {
+                answer.setText("Team added");
+            } else  {
+                answer.setText("Team already exists");
+            }
+        } else if (text.startsWith("/unplay ")) {
+            if (pongiqueue.remove(text.replace("/unplay ", "")))    {
+                answer.setText("Team removed");
+            } else  {
+                answer.setText("Team doesn't exists");
+            }
         }
         
         // Send message
