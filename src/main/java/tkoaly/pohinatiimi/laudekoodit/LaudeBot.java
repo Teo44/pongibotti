@@ -30,7 +30,9 @@ public class LaudeBot extends TelegramLongPollingBot {
             answer.setText("World!");
         } else if (text.startsWith("/play ")) {
             if (pongiqueue.registerTeam(text.replace("/play ", ""), chatId)) {
-                answer.setText("Team added");
+                String answerStr = "Team '" + text.replace("/play ", "") + "' added.\nCurrent queue:\n\n";
+                answerStr += pongiqueue.toString();
+                answer.setText(answerStr);
             } else  {
                 answer.setText("Team already exists");
             }
