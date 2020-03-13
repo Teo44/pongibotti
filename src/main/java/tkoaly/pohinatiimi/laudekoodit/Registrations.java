@@ -20,7 +20,7 @@ public class Registrations {
     }
     
     public boolean registerTeam(String name) {
-        if (name == null || name.trim().isEmpty() ) {
+        if (!isValidName(name)) {
             return false;
         }
         
