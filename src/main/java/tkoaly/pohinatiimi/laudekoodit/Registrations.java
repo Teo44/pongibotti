@@ -19,11 +19,11 @@ public class Registrations {
         this.registrations = new ArrayList<>();
     }
     
-    public boolean registerTeam(String name) {
+    public boolean registerTeam(String name, Long chatId) {
         if (!isValidName(name)) {
             return false;
         }
-        Team team = new Team(name);
+        Team team = new Team(name, chatId);
         
         if (registrations.contains(team)) {
             return false;
@@ -32,12 +32,27 @@ public class Registrations {
         return registrations.add(team);
     }
     
-    public boolean deleteTeam(String name) {
+    public boolean deleteTeam(String name, Long chatId) {
         if (!isValidName(name)) {
             return false;
         }
-        return registrations.remove(new Team(name));
+        Team registeredTeam = null;
+        for (Team registered : registrations) {
+            if (registered.getName().equals(name)) {
+                registeredTeam = registered;
+            }
+        }
+        
+        if (registeredTeam != null && registeredTeam.getChatId() == chatId) {
+            return registrations.remove(registeredTeam);
+        }
+        
+        return false;
     }
+    
+    //public boolean confirmTeamPlays(String name) {
+        
+    //}
     
     private boolean isValidName(String name) {
         return !(name == null || name.trim().isEmpty());

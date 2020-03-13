@@ -29,13 +29,13 @@ public class LaudeBot extends TelegramLongPollingBot {
         if (text.equals("Hello")) {
             answer.setText("World!");
         } else if (text.startsWith("/play ")) {
-            if (pongiqueue.registerTeam(text.replace("/play ", ""))) {
+            if (pongiqueue.registerTeam(text.replace("/play ", ""), chatId)) {
                 answer.setText("Team added");
             } else  {
                 answer.setText("Team already exists");
             }
         } else if (text.startsWith("/unplay ")) {
-            if (pongiqueue.deleteTeam(text.replace("/unplay ", "")))    {
+            if (pongiqueue.deleteTeam(text.replace("/unplay ", ""), chatId))    {
                 answer.setText("Team removed");
             } else  {
                 answer.setText("Team doesn't exists");
