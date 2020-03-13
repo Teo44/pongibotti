@@ -19,6 +19,17 @@ public class Registrations {
         this.registrations = new ArrayList<>();
     }
     
+    public Team getFirst()  {
+        if (registrations.size() > 0)   {
+            return registrations.get(0);
+        }
+        return null;
+    }
+    
+    public int getQueueLength() {
+        return registrations.size();
+    }
+    
     public boolean registerTeam(String name, Long chatId) {
         if (!isValidName(name)) {
             return false;
