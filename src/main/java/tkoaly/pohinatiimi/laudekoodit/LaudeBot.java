@@ -57,7 +57,14 @@ public class LaudeBot extends TelegramLongPollingBot {
                 answer.setText("VIIIIIIIIIIIIIIIIIIIIIIIIRHE");
             }
         } else if (text.equals("/list")) {
-            answer.setText(pongiqueue.toString());
+            String queue = "";
+            queue += "Currently playing: \n";
+            queue += curPlaying.toString();
+            queue += "\n\nCurrent queue:\n";
+            queue += pongiqueue.toString();
+            
+            answer.setText(queue);
+            
         } else if (text.startsWith("/finished "))   {
             int res = curPlaying.finishedPlaying(text.replace("/finished ", ""), chatId);
             if (res == 0) {
@@ -73,8 +80,6 @@ public class LaudeBot extends TelegramLongPollingBot {
             } else {
                 answer.setText("A team with that name is not in play");
             }
-        } else if (text.equals("/listplaying")) {
-          answer.setText(curPlaying.toString());  
         } else {
             answer.setText("Unknonwn command, have more drinks!");
         } 
