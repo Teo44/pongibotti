@@ -30,7 +30,7 @@ public class Team {
     }
     
     public Long getChatId() {
-        return this.getChatId();
+        return this.chatId;
     }
     
     @Override
