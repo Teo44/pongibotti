@@ -9,10 +9,10 @@ import io.github.cdimascio.dotenv.Dotenv;
 public class LaudeBot extends TelegramLongPollingBot {
 
     private Dotenv dotenv = Dotenv.load();
-    private PongiQueue pongiqueue;
+    private Registrations pongiqueue;
     
     public LaudeBot()   {
-        pongiqueue = new PongiQueue();
+        pongiqueue = new Registrations();
     }
 
     @Override
