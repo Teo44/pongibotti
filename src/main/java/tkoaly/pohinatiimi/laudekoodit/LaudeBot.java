@@ -37,7 +37,7 @@ public class LaudeBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "PongiBotti";
+        return dotenv.get("BOT_NAME");
     }
 
     @Override
