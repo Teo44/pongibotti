@@ -26,6 +26,17 @@ public class Registrations {
         
         return registrations.add(new Team(name));
     }
+    
+    public boolean deleteTeam(String name) {
+        if (!isValidName(name)) {
+            return false;
+        }
+        return registrations.remove(new Team(name));
+    }
+    
+    private boolean isValidName(String name) {
+        return !(name == null || name.trim().isEmpty());
+    }
 
     @Override
     public String toString() {
@@ -33,6 +44,10 @@ public class Registrations {
         for (Team t : registrations) {
             sb.append(t).append("\n");
         }
-        return sb.toString();//sb.substring(0, sb.length()-1);
+        if (sb.length() == 0) {
+            sb.append("No registrations").append("\n");
+        }
+        
+        return sb.substring(0, sb.length()); //remove trailing newline
     }
 }
