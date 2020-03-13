@@ -10,9 +10,11 @@ public class LaudeBot extends TelegramLongPollingBot {
 
     private Dotenv dotenv = Dotenv.load();
     private Registrations pongiqueue;
+    private CurrentlyPlaying curPlaying;
     
     public LaudeBot()   {
         pongiqueue = new Registrations();
+        curPlaying = new CurrentlyPlaying();
     }
 
     @Override
@@ -29,12 +31,17 @@ public class LaudeBot extends TelegramLongPollingBot {
         if (text.equals("Hello")) {
             answer.setText("World!");
         } else if (text.startsWith("/play ")) {
-            if (pongiqueue.registerTeam(text.replace("/play ", ""), chatId)) {
-                String answerStr = "Team '" + text.replace("/play ", "") + "' added.\nCurrent queue:\n\n";
-                answerStr += pongiqueue.toString();
-                answer.setText(answerStr);
+            if (curPlaying.getLength() < 2)  {
+                curPlaying.add(text.replace("/play ", ""), chatId);
+                answer.setText("A table is free, you can play right now");
             } else  {
-                answer.setText("Team already exists");
+                if (pongiqueue.registerTeam(text.replace("/play ", ""), chatId)) {
+                    String answerStr = "Team '" + text.replace("/play ", "") + "' added.\nCurrent queue:\n\n";
+                    answerStr += pongiqueue.toString();
+                    answer.setText(answerStr);
+                } else  {
+                    answer.setText("Team already exists");
+                }
             }
         } else if (text.startsWith("/unplay ")) {
             int remStatus = pongiqueue.deleteTeam(text.replace("/unplay ", ""), chatId);
@@ -51,6 +58,23 @@ public class LaudeBot extends TelegramLongPollingBot {
             }
         } else if (text.equals("/list")) {
             answer.setText(pongiqueue.toString());
+        } else if (text.startsWith("/finished "))   {
+            int res = curPlaying.finishedPlaying(text.replace("/finished ", ""), chatId);
+            if (res == 0) {
+                Team tiimi = pongiqueue.getFirst();
+                Long nextTeamID = tiimi.getChatId();
+                String tiimiNimi = tiimi.getName();
+                kutsuPelaamaan(tiimiNimi, nextTeamID);
+                curPlaying.add(tiimiNimi, nextTeamID);
+                pongiqueue.deleteTeam(tiimiNimi, nextTeamID);
+                answer.setText("Team removed from play");
+            } else if (res == 1)  {
+                answer.setText("You can't remove another person's team");
+            } else {
+                answer.setText("A team with that name is not in play");
+            }
+        } else if (text.equals("/listplaying")) {
+          answer.setText(curPlaying.toString());  
         } else {
             answer.setText("Unknonwn command, have more drinks!");
         } 
@@ -58,6 +82,17 @@ public class LaudeBot extends TelegramLongPollingBot {
         // Send message
         try {
             execute(answer);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void kutsuPelaamaan(String tiimi, Long id)    {
+        SendMessage answer2 = new SendMessage()
+            .setChatId(id);
+        answer2.setText("A table is free, you can proceed to play");
+        try {
+            execute(answer2);
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
