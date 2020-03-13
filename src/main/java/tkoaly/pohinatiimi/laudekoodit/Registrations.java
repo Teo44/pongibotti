@@ -82,17 +82,19 @@ public class Registrations {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (int i = 1; i <= registrations.size(); i++) {
-            sb.append(String.valueOf(i)).append(": ");
-            sb.append(registrations.get(i)).append("\n");
+        for (int i = 0; i < registrations.size(); i++) {
+            sb.append(String.valueOf(i+1));
+            sb.append(": ");
+            sb.append(registrations.get(i));
+            if (i != registrations.size()-1) {
+                sb.append("\n");
+            }
         }
         
         if (sb.length() == 0) {
-            sb.append("No registrations").append("\n");
+            sb.append("No registrations");
         }
-        System.out.println("DEBUG");
-        System.out.println(sb);
-        System.out.println("**********");
-        return sb.substring(0, sb.length()); //remove trailing newline
+        
+        return sb.toString();
     }
 }

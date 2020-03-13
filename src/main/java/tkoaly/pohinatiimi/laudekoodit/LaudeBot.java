@@ -48,7 +48,6 @@ public class LaudeBot extends TelegramLongPollingBot {
                 answer.setText("VIIIIIIIIIIIIIIIIIIIIIIIIRHE");
             }
         } else if (text.equals("/list")) {
-            System.out.println("IN METHOD");
             answer.setText(pongiqueue.toString());
         } else {
             answer.setText("Unknonwn command, have more drinks!");
